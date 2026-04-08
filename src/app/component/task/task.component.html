@@ -1,0 +1,98 @@
+<div class="container-button">
+    <button (click)="modal.abrir()" class="botao-add">+ Tarefa</button>
+    <button (click)="modal.fechar()" class="botao-delete">Excluir</button>
+</div>
+
+<div class="container">
+    <div>
+        <p>A fazer</p>
+        @for (item of jobs(); track item.id) {
+        @if (item.status === start) {
+        <div class="card" (click)="open(modalStatus, item)">
+            <h2 class="nome">{{ item.name }}</h2>
+            <h3>{{ item.description }}</h3>
+        </div>
+        }
+        }
+    </div>
+    <div>
+        <p>Em Progresso</p>
+        @for (item of jobs(); track item.id) {
+        @if (item.status === make) {
+        <div class="card" (click)="open(modalStatus, item)">
+            <h2 class="nome">{{ item.name }}</h2>
+            <h3>{{ item.description }}</h3>
+        </div>
+        }
+        }
+    </div>
+    <div>
+        <p>Concluído</p>
+        @for (item of jobs(); track item.id) {
+        @if (item.status === finish) {
+        <div class="card" (click)="open(modalStatus, item)">
+            <h2 class="nome">{{ item.name }}</h2>
+            <h3>{{ item.description }}</h3>
+        </div>
+        }
+        }
+    </div>
+</div>
+
+
+<app-modal #modal titulo="Novo Projeto">
+    <form>
+        <div class=" input-group">
+            <label for="nameProject">Título</label>
+            <input type="text" name="nameProject" [(ngModel)]="projectData.nameTask" required>
+        </div>
+
+        <div class="container-combo">
+            <label for="cor">Selecione uma cor:</label>
+
+            <select (change)="onChange($any($event.target).value)">
+
+                @for (item of categorys(); track item.name) {
+                <option [value]="item.color">
+                    {{ item.name }}
+                </option>
+                }
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+            <label for="description">Descrição</label>
+            <textarea rows="3" name="description" [(ngModel)]="projectData.description"
+                placeholder="Descrição da tarefa" required></textarea>
+        </div>
+
+        <div class="container-modal">
+            <button class="cancel-button" (click)="modal.fechar()">Cancelar</button>
+            <button class="login-button" (click)="salvar(modal)">Criar</button>
+        </div>
+    </form>
+</app-modal>
+
+<app-modal #modalStatus titulo=" Novo Projeto ">
+    <form>
+        <div class=" status-container">
+            <label for="status-select">Status da Tarefa:</label>
+            <select id="status-select" class="combo-status">
+                <option value="0">A fazer</option>
+                <option value="1">Em Progresso</option>
+                <option value="2">Concluído</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="description">Descrição</label>
+            <textarea rows="3" name="description" [(ngModel)]="projectData.description"
+                placeholder="Descrição da tarefa" required></textarea>
+        </div>
+        <div class="container-modal">
+            <button class="cancel-button" (click)="modalStatus.fechar()">Cancelar</button>
+            <button class="login-button" (click)="update(modalStatus)">Atualizar</button>
+        </div>
+    </form>
+</app-modal>

@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-input">
+        <form (ngSubmit)="salvar()">
+            <div class="input-group">
+                <label for="nameProject">Título</label>
+                <input type="text" name="nameProject" [(ngModel)]="projectData.nameTask" required>
+            </div>
+
+            <div class="container-modal">
+                <button type="submit" class="button-add">Criar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-cor">
+        <div>Cor</div>
+        <div class="small-card red" (click)="selectColor(colorCategory.Red)"></div>
+        <div class="small-card yellow" (click)="selectColor(colorCategory.Yellow)"></div>
+        <div class="small-card green" (click)="selectColor(colorCategory.Green)"></div>
+        <div class="small-card orange" (click)="selectColor(colorCategory.Orange)"></div>
+        <div class="small-card blue" (click)="selectColor(colorCategory.Blue)"></div>
+    </div>
+</div>
+
+<div class="item">
+    @for (item of categorys(); track item.id) {
+    <h2 class="nome">{{ item.name }}</h2>
+    } @empty {
+    <div class="container-center">
+        <p>Nenhum cor</p>
+    </div>
+    }
+</div>

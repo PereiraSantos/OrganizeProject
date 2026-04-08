@@ -1,0 +1,129 @@
+.card {
+    display: flex;
+    align-content: space-between;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border: 1px solid rgb(219, 215, 215);
+    border-radius: 15px;
+    padding: 20px;
+    font-family: sans-serif;
+    color: #333;
+}
+
+.card-titulo {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.card-botao {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.button-add {
+    width: 100%;
+    padding: 12px;
+    background: #3c83f6;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 1rem;
+
+}
+
+.input-group input,
+textarea:focus {
+    border-color: #3c83f6;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #3c83f6;
+}
+
+.card-input {
+    flex: 30%;
+}
+
+.card-cor {
+    flex: 70%;
+    margin-left: 50px;
+}
+
+.small-card {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-left: 10px;
+
+    &.red {
+        background-color: #ff0000;
+        border: 1px solid #cc0000;
+        margin-left: 0px;
+    }
+
+    &.yellow {
+        background-color: yellow;
+        border: 1px solid yellow;
+    }
+
+    &.green {
+        background-color: green;
+        border: 1px solid green;
+    }
+
+    &.orange {
+        background-color: orange;
+        border: 1px solid orange;
+    }
+
+    &.blue {
+        background-color: blue;
+        border: 1px solid blue;
+    }
+}
+
+.item {
+    margin-top: 15px;
+    background-color: #ffffff;
+    border: 1px solid rgb(219, 215, 215);
+    border-radius: 15px;
+    padding: 20px;
+    font-family: sans-serif;
+    color: #333;
+}
+
+h2 {
+    font-size: 0.9rem;
+}

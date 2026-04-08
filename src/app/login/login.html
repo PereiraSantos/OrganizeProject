@@ -1,0 +1,21 @@
+<body>
+    <div class="login-card">
+        <p>Gerenciamento de projetos</p>
+        <form (ngSubmit)="onSubmit()">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="text" name="email" [(ngModel)]="loginData.email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" name="password" [(ngModel)]="loginData.password" placeholder="Senha" required>
+            </div>
+
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+        <a href="#" class="forgot-password">Esqueceu a senha?</a>
+    </div>
+</body>
+
+<app-toast-container />
