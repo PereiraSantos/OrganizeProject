@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,13 +11,14 @@ export class TaskService {
 
     constructor(private http: HttpClient) { }
 
-    getTaks(): Observable<any> {
-        return this.http.get(this.apiUrl);
+    getTaks(idProject: number): Observable<any> {
+        const params = new HttpParams().set('idProject', idProject);
+        return this.http.get(this.apiUrl, { params });
     }
 
-    saveTask(name: string, description: string, idCategory: number): Observable<any> {
+    saveTask(name: string, description: string, idCategory: number, idProject: number): Observable<any> {
         return this.http.post(this.apiUrl, {
-            name: name, description: description, idCategory: idCategory
+            name: name, description: description, idCategory: idCategory, idProject: idProject
         });
     }
 

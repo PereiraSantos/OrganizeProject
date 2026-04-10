@@ -23,7 +23,8 @@ export class Dashboard implements OnInit {
     constructor(private projectService: ProjectService) { }
 
     isShowTask: boolean = false;
-    project: string = '';
+    project?: Project;
+
 
     ngOnInit(): void {
         this.getProjects();
@@ -47,6 +48,8 @@ export class Dashboard implements OnInit {
 
     salvar(modal: any) {
         modal.fechar();
+        if (this.projectData.nameProject === '') return;
+
         this.projectService.saveProjects(this.projectData.nameProject, this.projectData.description).subscribe({
             next: (response) => {
                 this.toastService.show('Projetos salvo com sucesso!', 'info');
@@ -69,7 +72,7 @@ export class Dashboard implements OnInit {
         });
     }
 
-    showTask(value: string) {
+    showTask(value?: Project) {
         this.project = value;
         this.isShowTask = !this.isShowTask;
     }

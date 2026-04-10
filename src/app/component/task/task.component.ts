@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, OnInit, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, Input, input, OnInit, signal } from "@angular/core";
 import { ModalComponent } from "../modal/modal.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Job } from "./job";
@@ -8,6 +8,7 @@ import { Category } from "../category/category";
 import { CategoryService } from "../../services/catergory.service";
 import { ToastService } from "../../services/toast.service";
 import { TaskService } from "../../services/task.service";
+import { Project } from "../../dashboard/project";
 
 @Component({
     selector: 'app-task',
@@ -18,6 +19,8 @@ import { TaskService } from "../../services/task.service";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Task implements OnInit {
+    @Input() project?: Project;
+
     private toastService = inject(ToastService);
 
     constructor(private categoryService: CategoryService, private taskService: TaskService) { }
@@ -43,7 +46,7 @@ export class Task implements OnInit {
     }
 
     getTasks() {
-        this.taskService.getTaks().subscribe({
+        this.taskService.getTaks(this.project?.id ?? -1).subscribe({
             next: (response) => {
                 this.createList(response);
             },
@@ -68,12 +71,13 @@ export class Task implements OnInit {
         this.jobs.update(item => []);
 
         for (const job of list) {
-            this.jobs.update(lista => [...lista, new Job(job['id'], job['name'], job['description'], job['id_category'], job['status'])]);
+            this.jobs.update(lista => [...lista, new Job(job['id'], job['name'], job['description'], job['id_category'], job['id_project'], job['status'])]);
         }
     }
 
     createListCategory(list: any[]) {
         this.categorys.update(item => []);
+        this.categorySelected = 0;
 
         for (const category of list) {
             this.categorys.update(item => [...item, new Category(category['id'], category['name'], category['color'])]);
@@ -94,11 +98,13 @@ export class Task implements OnInit {
 
     salvar(modal: any) {
         modal.fechar();
-        this.taskService.saveTask(this.projectData.nameTask, this.projectData.description, this.categorySelected).subscribe({
+        this.taskService.saveTask(this.projectData.nameTask, this.projectData.description, this.categorySelected, this.project?.id ?? -1).subscribe({
             next: (response) => {
                 this.toastService.show('Tarefa salva com sucesso!', 'info');
                 this.getcategorys();
                 this.getTasks();
+                this.projectData.nameTask = '';
+                this.projectData.description = '';
             },
             error: (error) => {
                 this.toastService.show('Projetos ou senha inválidos!', 'error');

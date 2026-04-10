@@ -40,7 +40,7 @@
 </div>
 
 
-<app-modal #modal titulo="Novo Projeto">
+<app-modal #modal titulo="Nova Tarefa" style="color: gray;">
     <form>
         <div class=" input-group">
             <label for="nameProject">Título</label>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="container-combo">
-            <label for="cor">Selecione uma cor:</label>
+            <label>Selecione uma cor:</label>
 
             <select (change)="onChange($any($event.target).value)">
 
@@ -75,10 +75,10 @@
     </form>
 </app-modal>
 
-<app-modal #modalStatus titulo=" Novo Projeto ">
+<app-modal #modalStatus titulo="Status Tarefa" style="color: gray;">
     <form>
         <div class=" status-container">
-            <label for="status-select">Status da Tarefa:</label>
+            <label for="status-select">Status:</label>
             <select id="status-select" class="combo-status">
                 <option value="0">A fazer</option>
                 <option value="1">Em Progresso</option>

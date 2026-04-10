@@ -38,6 +38,7 @@ export class CategoryComponent implements OnInit {
             next: (response) => {
                 this.toastService.show('Projetos salvo com sucesso!', 'info');
                 this.getcategorys();
+                this.projectData.nameTask = '';
             },
             error: (error) => {
                 this.toastService.show('Projetos ou senha inválidos!', 'error');
