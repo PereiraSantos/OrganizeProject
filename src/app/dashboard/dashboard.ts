@@ -37,15 +37,6 @@ export class Dashboard implements OnInit {
         description: ''
     };
 
-    createList(list: any[]) {
-        this.projects.update(item => []);
-
-        for (const project of list) {
-            this.projects.update(item => [...item, new Project(project['id'], project['name'], project['description'])]);
-        }
-
-    }
-
     salvar(modal: any) {
         modal.fechar();
         if (this.projectData.nameProject === '') return;
@@ -62,6 +53,8 @@ export class Dashboard implements OnInit {
     }
 
     getProjects() {
+        this.clear();
+
         this.projectService.getProjects().subscribe({
             next: (response) => {
                 this.createList(response);
@@ -72,9 +65,22 @@ export class Dashboard implements OnInit {
         });
     }
 
+    createList(list: any[]) {
+        for (const project of list) {
+            this.projects.update(item => [...item, new Project(project['id'], project['name'], project['description'])]);
+        }
+
+    }
+
     showTask(value?: Project) {
         this.project = value;
         this.isShowTask = !this.isShowTask;
+    }
+
+    clear() {
+        this.projects.update(item => []);
+        this.projectData.nameProject = '';
+        this.projectData.description = '';
     }
 
 }
