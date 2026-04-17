@@ -14,11 +14,15 @@
 
     <div class="card-cor">
         <div>Cor</div>
-        <div class="small-card red" (click)="selectColor(colorCategory.Red)"></div>
-        <div class="small-card yellow" (click)="selectColor(colorCategory.Yellow)"></div>
-        <div class="small-card green" (click)="selectColor(colorCategory.Green)"></div>
-        <div class="small-card orange" (click)="selectColor(colorCategory.Orange)"></div>
-        <div class="small-card blue" (click)="selectColor(colorCategory.Blue)"></div>
+        <div class="row-colors">
+            @for (cor of colors(); track cor.id) {
+            <div class="small-card" [ngStyle]="getStyle(cor)" (click)="selectColor(cor)">
+                @if (cor.selected) {
+                <span class="check">✓</span>
+                }
+            </div>
+            }
+        </div>
     </div>
 </div>
 

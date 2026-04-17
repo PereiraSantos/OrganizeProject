@@ -8,9 +8,10 @@
         <p>A fazer</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === start) {
-        <div class="card" (click)="open(modalStatus, item)">
-            <h2 class="nome">{{ item.name }}</h2>
-            <h3>{{ item.description }}</h3>
+        <div class="card" (click)="open(modalStatus, item)" [ngStyle]="getStyle(item.idCategory)">
+            <h2 class="nome">Título: {{ item.name }}</h2>
+            <h3>Descrição: {{ item.description }}</h3>
+            <h4>Categoria: {{ getCategoryName(item.idCategory) }} </h4>
         </div>
         }
         }
@@ -19,9 +20,10 @@
         <p>Em Progresso</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === make) {
-        <div class="card" (click)="open(modalStatus, item)">
-            <h2 class="nome">{{ item.name }}</h2>
-            <h3>{{ item.description }}</h3>
+        <div class="card" (click)="open(modalStatus, item)" [ngStyle]="getStyle(item.idCategory)">
+            <h2 class="nome">Título: {{ item.name }}</h2>
+            <h3>Descrição: {{ item.description }}</h3>
+            <h4>Categoria: {{ getCategoryName(item.idCategory) }} </h4>
         </div>
         }
         }
@@ -30,9 +32,10 @@
         <p>Concluído</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === finish) {
-        <div class="card" (click)="open(modalStatus, item)">
-            <h2 class="nome">{{ item.name }}</h2>
-            <h3>{{ item.description }}</h3>
+        <div class="card" (click)="open(modalStatus, item)" [ngStyle]="getStyle(item.idCategory)">
+            <h2 class="nome">Título: {{ item.name }}</h2>
+            <h3>Descrição: {{ item.description }}</h3>
+            <h4>Categoria: {{ getCategoryName(item.idCategory) }} </h4>
         </div>
         }
         }

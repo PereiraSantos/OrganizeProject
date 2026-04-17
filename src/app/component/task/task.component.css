@@ -183,7 +183,11 @@ select {
 }
 
 h3 {
-    padding: 2px;
     font-size: 1rem;
     color: grey;
+}
+
+h4 {
+    font-size: 0.9rem;
+    color: rgb(185, 184, 184);
 }

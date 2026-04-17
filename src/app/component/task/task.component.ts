@@ -9,10 +9,12 @@ import { CategoryService } from "../../services/catergory.service";
 import { ToastService } from "../../services/toast.service";
 import { TaskService } from "../../services/task.service";
 import { Project } from "../../dashboard/project";
+import { Color } from "../category/color";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: 'app-task',
-    imports: [FormsModule, ModalComponent, ReactiveFormsModule],
+    imports: [FormsModule, ModalComponent, ReactiveFormsModule, CommonModule],
     templateUrl: './task.component.html',
     styleUrl: './task.component.css',
     standalone: true,
@@ -37,6 +39,14 @@ export class Task implements OnInit {
 
     jobs = signal<Job[]>([]);
     categorys = signal<Category[]>([]);
+
+    colors = <Color[]>([
+        new Color(0, '#DC143C', false),
+        new Color(1, '#ffff25', false),
+        new Color(2, '#00FF7F', false),
+        new Color(3, '#FFA500', false),
+        new Color(4, '#6A5ACD', false),
+    ]);
 
     categorySelected: number = 0;
 
@@ -129,10 +139,21 @@ export class Task implements OnInit {
     }
 
 
-
     getStart = computed(() => this.jobs().filter((n) => n.status === Status.Start));
 
     getMake = computed(() => this.jobs().filter((n) => n.status === Status.Make));
 
     getFinish = computed(() => this.jobs().filter((n) => n.status === Status.Finish));
+
+    getCategoryName(id: number): string {
+        let result = this.categorys().filter((n) => n.id === id);
+        if (result.length > 0) return result[0].name
+        return '';
+    }
+
+    getStyle(id: number) {
+        return {
+            border: '0.8px solid ' + this.colors[id].cor,
+        };
+    }
 }
