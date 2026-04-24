@@ -98,7 +98,6 @@ export class Task implements OnInit {
         this.categorySelected = valor;
     }
 
-
     open(modal: any, item: Job) {
         modal.abrir()
         this.projectData.id = item.id.toString();

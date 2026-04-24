@@ -56,7 +56,7 @@
             <select (change)="onChange($any($event.target).value)">
 
                 @for (item of categorys(); track item.name) {
-                <option [value]="item.color">
+                <option [value]="item.id">
                     {{ item.name }}
                 </option>
                 }
