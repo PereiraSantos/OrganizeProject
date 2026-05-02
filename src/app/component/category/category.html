@@ -1,13 +1,17 @@
 <div class="card">
     <div class="card-input">
-        <form (ngSubmit)="salvar()">
+        <form [formGroup]="form">
             <div class="input-group">
                 <label for="nameProject">Título</label>
-                <input type="text" name="nameProject" [(ngModel)]="projectData.nameTask" required>
+                <input type="text" name="nameProject" formControlName="title">
             </div>
 
+            @if (form.get('title')?.invalid && form.get('title')?.touched) {
+            <div class="required-value">Título é obrigatório.</div>
+            }
+
             <div class="container-modal">
-                <button type="submit" class="button-add">Criar</button>
+                <button (click)="salvar()" class="button-add">Criar</button>
             </div>
         </form>
     </div>
@@ -28,7 +32,11 @@
 
 <div class="item">
     @for (item of categorys(); track item.id) {
-    <h2 class="nome">{{ item.name }}</h2>
+    <div class="color-category">
+        <div class="card-category" [ngStyle]="getStyleColor(item)"></div>
+        <h2 class="nome">{{ item.name }}</h2>
+    </div>
+
     } @empty {
     <div class="container-center">
         <p>Nenhum cor</p>

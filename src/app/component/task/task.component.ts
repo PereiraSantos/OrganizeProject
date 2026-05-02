@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, Input, input, OnInit, signal } from "@angular/core";
 import { ModalComponent } from "../modal/modal.component";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Job } from "./job";
 import { Status } from "./status_enum";
 import { inject } from '@angular/core';
@@ -25,13 +25,9 @@ export class Task implements OnInit {
 
     private toastService = inject(ToastService);
 
-    constructor(private categoryService: CategoryService, private taskService: TaskService) { }
+    constructor(private categoryService: CategoryService, private taskService: TaskService, public fb: FormBuilder) { }
 
-    projectData = {
-        id: '',
-        nameTask: '',
-        description: ''
-    };
+    form!: FormGroup;
 
     start = Status.Start;
     make = Status.Make;
@@ -48,11 +44,20 @@ export class Task implements OnInit {
         new Color(4, '#6A5ACD', false),
     ]);
 
-    categorySelected: number = 0;
+    categorySelected: number = 1;
 
     ngOnInit(): void {
+        this.initForm();
         this.getcategorys();
         this.getTasks();
+    }
+
+    initForm() {
+        this.form = this.fb.group({
+            id: ['', []],
+            name: ['', [Validators.required, Validators.maxLength(1000)]],
+            description: ['', [Validators.required, Validators.maxLength(1000)]],
+        });
     }
 
     getTasks() {
@@ -87,7 +92,7 @@ export class Task implements OnInit {
 
     createListCategory(list: any[]) {
         this.categorys.update(item => []);
-        this.categorySelected = 0;
+        this.categorySelected = 1;
 
         for (const category of list) {
             this.categorys.update(item => [...item, new Category(category['id'], category['name'], category['color'])]);
@@ -100,32 +105,38 @@ export class Task implements OnInit {
 
     open(modal: any, item: Job) {
         modal.abrir()
-        this.projectData.id = item.id.toString();
-        this.projectData.nameTask = item.name;
-        this.projectData.description = item.description;
+        this.form.setValue({
+            id: item.id.toString(),
+            name: item.name,
+            description: item.description,
+        });
+
     }
 
     salvar(modal: any) {
-        modal.fechar();
-        this.taskService.saveTask(this.projectData.nameTask, this.projectData.description, this.categorySelected, this.project?.id ?? -1).subscribe({
-            next: (response) => {
-                this.toastService.show('Tarefa salva com sucesso!', 'info');
-                this.getcategorys();
-                this.getTasks();
-                this.projectData.nameTask = '';
-                this.projectData.description = '';
-            },
-            error: (error) => {
-                this.toastService.show('Projetos ou senha inválidos!', 'error');
-            }
-        });
+        if (this.form.valid) {
+            modal.fechar();
+            this.taskService.saveTask(this.form.value.name, this.form.value.description, this.categorySelected, this.project?.id!).subscribe({
+                next: (response) => {
+                    this.toastService.show('Tarefa salva com sucesso!', 'info');
+
+                    this.getcategorys();
+                    this.getTasks();
+
+                    this.resetForm();
+                },
+                error: (error) => {
+                    this.toastService.show('Projetos ou senha inválidos!', 'error');
+                }
+            });
+        }
     }
 
     update(modal: any) {
         const select = document.getElementById('status-select') as HTMLInputElement;
         modal.fechar();
 
-        this.taskService.updateStatus(parseInt(this.projectData.id), parseInt(select.value)).subscribe({
+        this.taskService.updateStatus(parseInt(this.form.value.id), parseInt(select.value)).subscribe({
             next: (response) => {
                 this.toastService.show('Status atualizado com sucesso!', 'info');
                 this.getcategorys();
@@ -155,4 +166,12 @@ export class Task implements OnInit {
             border: '0.8px solid ' + this.colors[id].cor,
         };
     }
+
+    resetForm() {
+        this.form.get('id')!.reset();
+        this.form.get('name')!.reset();
+        this.form.get('description')!.reset();
+    }
+
+
 }

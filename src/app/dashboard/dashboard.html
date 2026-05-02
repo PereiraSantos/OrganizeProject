@@ -1,6 +1,6 @@
 @if (isShowTask) {
-<button class="button-task" (click)="showTask()">Projetos </button>
-<div class="title">Projeto: {{ project?.name || ''}}</div>
+<button class="button-task" (click)="showTask()">Projetos</button>
+<div class="title">Tarefas: {{ project?.name || ''}}</div>
 <app-task [project]="project"></app-task>
 } @else {
 <div class="container-project">
@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-title">
             <h2 class="nome">{{ item.name }}</h2>
-            <button class="button-task" (click)="showTask(item)">></button>
+            <button class="button-task" (click)="showTask(item)">Tarefas</button>
         </div>
 
         <p class="descricao">{{ item.description }}</p>
@@ -26,17 +26,23 @@
 }
 
 <app-modal #modal titulo="Novo Projeto" style="color: gray;">
-    <form>
+    <form [formGroup]="form">
         <div class="input-group">
-            <label for="nameProject">Nome do projeto</label>
-            <input type="text" name="nameProject" [(ngModel)]="projectData.nameProject" required>
+            <label for="name">Nome do projeto</label>
+            <input type="text" name="name" formControlName="name">
         </div>
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <div class="required-value">Nome é obrigatório.</div>
+        }
 
         <div class="input-group">
             <label for="description">Descrição</label>
-            <textarea rows="3" name="description" [(ngModel)]="projectData.description" placeholder="Descrição projeto"
-                required></textarea>
+            <textarea rows="3" name="description" placeholder="Descrição projeto" required
+                formControlName="description"></textarea>
         </div>
+        @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <div class="required-value">Descrição é obrigatório.</div>
+        }
 
         <div class="container-modal">
             <button class="cancel-button" (click)="modal.fechar()">Cancelar</button>

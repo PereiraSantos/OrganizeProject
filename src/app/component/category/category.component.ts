@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../services/catergory.service';
 import { ToastService } from '../../services/toast.service';
 import { Category } from './category';
@@ -8,23 +8,15 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-category',
-    imports: [FormsModule, CommonModule],
+    imports: [FormsModule, CommonModule, ReactiveFormsModule],
     templateUrl: './category.html',
     styleUrl: './category.css',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
 export class CategoryComponent implements OnInit {
     private toastService = inject(ToastService);
 
-    constructor(private categoryService: CategoryService) { }
-
-    projectData = {
-        id: '',
-        nameTask: '',
-        description: ''
-    };
 
     selectedColor: Color = new Color(0, 'red', false);
     categorys = signal<Category[]>([]);
@@ -36,21 +28,35 @@ export class CategoryComponent implements OnInit {
         new Color(4, '#6A5ACD', false),
     ]);
 
+    form!: FormGroup;
+
+    constructor(private categoryService: CategoryService, public fb: FormBuilder) { }
+
     ngOnInit(): void {
+        this.initForm();
         this.getcategorys();
     }
 
-    salvar() {
-        this.categoryService.saveCategory(this.projectData.nameTask, this.selectedColor.id).subscribe({
-            next: (response) => {
-                this.toastService.show('Projetos salvo com sucesso!', 'info');
-                this.getcategorys();
-                this.projectData.nameTask = '';
-            },
-            error: (error) => {
-                this.toastService.show('Projetos ou senha inválidos!', 'error');
-            }
+    initForm() {
+        this.form = this.fb.group({
+            title: ['', [Validators.required, Validators.maxLength(100)]],
         });
+    }
+
+    salvar() {
+        if (this.form.valid) {
+            this.categoryService.saveCategory(this.form.value.title, this.selectedColor.id).subscribe({
+                next: (response) => {
+                    this.toastService.show('Projetos salvo com sucesso!', 'info');
+                    this.getcategorys();
+
+                    this.form.get('title')!.reset();
+                },
+                error: (error) => {
+                    this.toastService.show('Projetos ou senha inválidos!', 'error');
+                }
+            });
+        }
     }
 
     getcategorys() {
@@ -88,6 +94,14 @@ export class CategoryComponent implements OnInit {
         return {
             'background-color': cor.cor,
             border: cor.selected ? '1px solid ' + cor.cor : 'none'
+        };
+    }
+
+    getStyleColor(category: Category) {
+        let color: any = this.colors().filter(p => p.id === category.color);
+
+        return {
+            'background-color': color[0].cor
         };
     }
 

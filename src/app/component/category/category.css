@@ -125,3 +125,20 @@ textarea:focus {
 h2 {
     font-size: 0.9rem;
 }
+
+.required-value {
+    color: #d32f2f;
+}
+
+.color-category {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+
+.card-category {
+    width: 20px;
+    height: 20px;
+    border-radius: 02px;
+}

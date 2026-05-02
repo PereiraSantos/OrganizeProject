@@ -130,9 +130,9 @@ body {
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 24px;
-    width: 260px;
+    padding: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 220px;
 }
 
 .nome {
@@ -143,7 +143,7 @@ body {
 
 .descricao {
     color: #666;
-    line-height: 1.6;
+    line-height: 0.5;
     font-size: 0.95rem;
 }
 
@@ -153,12 +153,15 @@ body {
 }
 
 .button-task {
-    height: 20px;
+    height: 30px;
     background-color: transparent;
-    border: none;
-    color: rgba(0, 0, 0, 0.658);
+    border: 1px solid #3c83f6;
+    color: #3c83f6;
     cursor: pointer;
     font-size: 1rem;
+    border-radius: 06px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 
@@ -168,4 +171,9 @@ body {
     margin-top: 10px;
     color: grey;
     font-size: 0.9rem;
+    border-radius: 04px;
+}
+
+.required-value {
+    color: #d32f2f;
 }
