@@ -183,19 +183,19 @@ select {
 }
 
 .nome {
-    line-height: 0.5;
+    line-height: 1;
 }
 
 h3 {
     font-size: 1rem;
     color: grey;
-    line-height: 0.5;
+    line-height: 1;
 }
 
 h4 {
     font-size: 0.9rem;
     color: rgb(185, 184, 184);
-    line-height: 0.5;
+    line-height: 1;
 }
 
 .required-value {
