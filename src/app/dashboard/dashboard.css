@@ -150,9 +150,10 @@ body {
 .card-title {
     display: flex;
     justify-content: space-between;
+    flex: 1;
 }
 
-.button-task {
+.button-project {
     height: 30px;
     background-color: transparent;
     border: 1px solid #3c83f6;
@@ -162,6 +163,21 @@ body {
     border-radius: 06px;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.button-task {
+    height: 25px;
+    background-color: transparent;
+    border: 1px solid #3c83f6;
+    color: #3c83f6;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 06px;
+    flex: 1;
+}
+
+.margin {
+    margin-left: 10px;
 }
 
 

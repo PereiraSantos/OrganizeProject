@@ -21,4 +21,12 @@ export class ProjectService {
             name: name, description: description
         });
     }
+
+    editProject(id: number, name: string, description: string): Observable<any> {
+        return this.http.put(`${this.API_URL}/api/project`, {
+            id: id,
+            name: name,
+            description: description
+        });
+    }
 }

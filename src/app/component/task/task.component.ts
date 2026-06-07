@@ -136,11 +136,13 @@ export class Task implements OnInit {
         const select = document.getElementById('status-select') as HTMLInputElement;
         modal.fechar();
 
-        this.taskService.updateStatus(parseInt(this.form.value.id), parseInt(select.value)).subscribe({
+        this.taskService.updateStatus(parseInt(this.form.value.id), parseInt(select.value), this.form.value.description).subscribe({
             next: (response) => {
                 this.toastService.show('Status atualizado com sucesso!', 'info');
+
                 this.getcategorys();
                 this.getTasks();
+                this.resetForm();
             },
             error: (error) => {
                 this.toastService.show('erro ao atualizar status', 'error');

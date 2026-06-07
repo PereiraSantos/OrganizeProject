@@ -1,10 +1,9 @@
 <div class="container-button">
     <button (click)="modal.abrir()" class="botao-add">+ Tarefa</button>
-    <button (click)="modal.fechar()" class="botao-delete">Excluir</button>
 </div>
 
 <div class="container">
-    <div>
+    <div class="container-card">
         <p>A fazer</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === start) {
@@ -16,7 +15,7 @@
         }
         }
     </div>
-    <div>
+    <div class="container-card">
         <p>Em Progresso</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === make) {
@@ -28,7 +27,7 @@
         }
         }
     </div>
-    <div>
+    <div class="container-card">
         <p>Concluído</p>
         @for (item of jobs(); track item.id) {
         @if (item.status === finish) {
@@ -98,7 +97,7 @@
         </div>
         <div class="input-group">
             <label for="description">Descrição</label>
-            <textarea readOnly rows="3" name="description" formControlName="description"
+            <textarea rows="3" name="description" formControlName="description"
                 placeholder="Descrição da tarefa"></textarea>
         </div>
         <div class="container-modal">

@@ -1,5 +1,5 @@
 @if (isShowTask) {
-<button class="button-task" (click)="showTask()">Projetos</button>
+<button class="button-project" (click)="showTask()">Projetos</button>
 <div class="title">Tarefas: {{ project?.name || ''}}</div>
 <app-task [project]="project"></app-task>
 } @else {
@@ -10,12 +10,12 @@
 <div class="container">
     @for (item of projects(); track item.name) {
     <div class="card">
-        <div class="card-title">
-            <h2 class="nome">{{ item.name }}</h2>
-            <button class="button-task" (click)="showTask(item)">Tarefas</button>
-        </div>
-
+        <h2 class="nome">{{ item.name }}</h2>
         <p class="descricao">{{ item.description }}</p>
+        <div class="card-title">
+            <button class="button-task" (click)="projectEdit(modalEdit, item)">Editar</button>
+            <button class="button-task margin" (click)="showTask(item)">Tarefas</button>
+        </div>
     </div>
     } @empty {
     <div class="container-center">
@@ -47,6 +47,32 @@
         <div class="container-modal">
             <button class="cancel-button" (click)="modal.fechar()">Cancelar</button>
             <button type="submit" class="login-button" (click)="salvar(modal)">Criar</button>
+        </div>
+    </form>
+</app-modal>
+
+<app-modal #modalEdit titulo="Editar Projeto" style="color: gray;">
+    <form [formGroup]="form">
+        <div class="input-group">
+            <label for="name">Nome do projeto</label>
+            <input type="text" name="name" formControlName="name">
+        </div>
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <div class="required-value">Nome é obrigatório.</div>
+        }
+
+        <div class="input-group">
+            <label for="description">Descrição</label>
+            <textarea rows="3" name="description" placeholder="Descrição projeto"
+                formControlName="description"></textarea>
+        </div>
+        @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <div class="required-value">Descrição é obrigatório.</div>
+        }
+
+        <div class="container-modal">
+            <button class="cancel-button" (click)="modalEdit.fechar()">Cancelar</button>
+            <button type="submit" class="login-button" (click)="edit(modalEdit)">Editar</button>
         </div>
     </form>
 </app-modal>

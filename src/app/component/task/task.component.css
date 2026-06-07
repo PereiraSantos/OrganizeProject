@@ -109,9 +109,12 @@ textarea:focus {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     padding: 10px;
-    width: 320px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 10px;
+}
+
+.container-card {
+    flex: 1;
 }
 
 p {
@@ -200,4 +203,9 @@ h4 {
 
 .required-value {
     color: #d32f2f;
+}
+
+.container-button {
+    margin-top: 10px;
+
 }

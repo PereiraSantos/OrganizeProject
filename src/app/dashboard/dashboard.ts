@@ -77,6 +77,31 @@ export class Dashboard implements OnInit {
 
     }
 
+    projectEdit(modal: any, value: Project) {
+        this.project = value;
+
+        this.form.patchValue({ name: this.project.name });
+        this.form.patchValue({ description: this.project.description });
+
+        modal.abrir();
+    }
+
+    edit(modal: any) {
+        if (this.form.valid && this.project != undefined) {
+            modal.fechar();
+
+            this.projectService.editProject(this.project!.id!, this.form.value.name, this.form.value.description).subscribe({
+                next: (response) => {
+                    this.toastService.show('Projetos editado com sucesso!', 'info');
+                    this.getProjects();
+                },
+                error: (error) => {
+                    this.toastService.show('Projetos ou senha inválidos!', 'error');
+                }
+            });
+        }
+    }
+
     showTask(value?: Project) {
         this.project = value;
         this.isShowTask = !this.isShowTask;

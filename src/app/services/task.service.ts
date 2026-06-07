@@ -22,9 +22,11 @@ export class TaskService {
         });
     }
 
-    updateStatus(id: number, status: number): Observable<any> {
+    updateStatus(id: number, status: number, description: string): Observable<any> {
         return this.http.post(`${this.API_URL}/api/task` + '/status', {
-            id: id, status: status,
+            id: id,
+            status: status,
+            description: description
         });
     }
 }
