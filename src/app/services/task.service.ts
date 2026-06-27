@@ -13,12 +13,21 @@ export class TaskService {
 
     getTaks(idProject: number): Observable<any> {
         const params = new HttpParams().set('idProject', idProject);
-        return this.http.get(`${this.API_URL}/api/task`, { params });
+        return this.http.get(`${this.API_URL}/api/task`, {
+            params, headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            }
+        });
     }
 
     saveTask(name: string, description: string, idCategory: number, idProject: number): Observable<any> {
         return this.http.post(`${this.API_URL}/api/task`, {
-            name: name, description: description, idCategory: idCategory, idProject: idProject
+            name: name, description: description, idCategory: idCategory, idProject: idProject,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            }
         });
     }
 
@@ -26,7 +35,11 @@ export class TaskService {
         return this.http.post(`${this.API_URL}/api/task` + '/status', {
             id: id,
             status: status,
-            description: description
+            description: description,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            }
         });
     }
 }

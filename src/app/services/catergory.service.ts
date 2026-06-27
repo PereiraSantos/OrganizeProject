@@ -13,12 +13,20 @@ export class CategoryService {
     constructor(private http: HttpClient) { }
 
     getCategorys(): Observable<any> {
-        return this.http.get(`${this.API_URL}/api/category`);
+        return this.http.get(`${this.API_URL}/api/category`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            }
+        });
     }
 
     saveCategory(name: string, color: number): Observable<any> {
         return this.http.post(`${this.API_URL}/api/category`, {
-            name: name, colorCategory: color
+            name: name, colorCategory: color, headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            }
         });
     }
 }

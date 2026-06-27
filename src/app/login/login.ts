@@ -27,10 +27,13 @@ export class Login {
         this.authService.login(this.loginData.email, this.loginData.password)
             .subscribe({
                 next: (response) => {
-                    if (response)
+                    if (response) {
+                        sessionStorage.setItem('auth_token', response.token);
                         this.router.navigate(['/dashboard']);
-                    else
+                    }
+                    else {
                         this.toastService.show('Usuário ou senha inválidos!', 'info');
+                    }
                 },
                 error: (error) => {
                     this.toastService.show('Usuário ou senha inválidos!', 'error');

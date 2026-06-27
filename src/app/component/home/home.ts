@@ -7,7 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -18,4 +18,12 @@ import { RouterModule } from '@angular/router';
 
 
 })
-export class Home { }
+export class Home {
+
+    constructor(private router: Router) { }
+
+    handleClick() {
+        sessionStorage.removeItem('auth_token');
+        this.router.navigate(['login']);
+    }
+}
