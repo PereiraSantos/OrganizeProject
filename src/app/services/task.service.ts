@@ -23,23 +23,31 @@ export class TaskService {
 
     saveTask(name: string, description: string, idCategory: number, idProject: number): Observable<any> {
         return this.http.post(`${this.API_URL}/api/task`, {
-            name: name, description: description, idCategory: idCategory, idProject: idProject,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            name: name, description: description, idCategory: idCategory, idProject: idProject
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+
+                }
             }
-        });
+        );
     }
 
     updateStatus(id: number, status: number, description: string): Observable<any> {
         return this.http.post(`${this.API_URL}/api/task` + '/status', {
             id: id,
             status: status,
-            description: description,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            description: description
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+
+                }
             }
-        });
+        );
     }
 }

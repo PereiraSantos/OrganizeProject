@@ -23,23 +23,31 @@ export class ProjectService {
 
     saveProjects(name: string, description: string): Observable<any> {
         return this.http.post(`${this.API_URL}/api/project`, {
-            name: name, description: description,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            name: name, description: description
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+
+                }
             }
-        });
+        );
     }
 
     editProject(id: number, name: string, description: string): Observable<any> {
         return this.http.put(`${this.API_URL}/api/project`, {
             id: id,
             name: name,
-            description: description,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+            description: description
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('auth_token')}`
+
+                }
             }
-        });
+        );
     }
 }
