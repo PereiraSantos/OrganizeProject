@@ -1,4 +1,4 @@
-import { Component, } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Router, RouterModule } from '@angular/router';
+import { SessionService } from '../../services/session.service';
 
 @Component({
     selector: 'app-home',
@@ -19,11 +20,11 @@ import { Router, RouterModule } from '@angular/router';
 
 })
 export class Home {
-
-    constructor(private router: Router) { }
+    private readonly router = inject(Router);
+    private readonly session = inject(SessionService);
 
     handleClick() {
-        sessionStorage.removeItem('auth_token');
+        this.session.clear();
         this.router.navigate(['login']);
     }
 }

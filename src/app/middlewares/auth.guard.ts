@@ -1,11 +1,12 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
+import { SessionService } from '../services/session.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
-    const token = sessionStorage.getItem('auth_token');
+    const session = inject(SessionService);
 
-    if (token) {
+    if (session.isAuthenticated()) {
         if (router.url != '/dashboard') router.navigate(['dashboard']);
         return false;
     }
@@ -15,9 +16,9 @@ export const loginGuard: CanActivateFn = (route, state) => {
 
 export const routeGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
-    const token = sessionStorage.getItem('auth_token');
+    const session = inject(SessionService);
 
-    if (token == null || token == undefined) {
+    if (!session.isAuthenticated()) {
         if (router.url != '/login') router.navigate(['login']);
         return false;
     }

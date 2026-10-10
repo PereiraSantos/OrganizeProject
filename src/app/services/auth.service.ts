@@ -1,20 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Observable, tap } from 'rxjs';
+import { Credentials } from '../models/credentials.model';
+import { LoginResponse } from '../models/login-response.model';
+import { AuthStrategy } from './auth.strategy';
+import { HttpAuthStrategy } from './http-auth.strategy';
+import { SessionService } from './session.service';
 
+/**
+ * Serviço de autenticação.
+ * Responsabilidade única: orquestrar autenticação + persistência da sessão.
+ * Delega a chamada concreta para uma AuthStrategy (DIP) e o storage para SessionService.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private readonly API_URL = environment.apiUrl;
+    constructor(
+        private readonly strategy: HttpAuthStrategy,
+        private readonly session: SessionService
+    ) { }
 
-    constructor(private http: HttpClient) { }
+    /**
+     * Autentica e persiste o token em caso de sucesso.
+     */
+    login(email: string, password: string): Observable<LoginResponse> {
+        return this.strategy.login(new Credentials(email, password)).pipe(
+            tap((response) => this.session.setToken(response.token))
+        );
+    }
 
-    login(email: string, password: string): Observable<any> {
-        return this.http.post(`${this.API_URL}/api/user/auth`, {
-            email: email, password: password
-        });
+    logout(): void {
+        this.session.clear();
+    }
 
+    isAuthenticated(): boolean {
+        return this.session.isAuthenticated();
     }
 }
+
+export type { AuthStrategy };

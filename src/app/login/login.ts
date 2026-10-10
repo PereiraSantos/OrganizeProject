@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { ToastService } from '../services/toast.service';
 import { ToastContainerComponent } from '../component/toast-container.component';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
-
+import { Credentials } from '../models/credentials.model';
+import { AuthFacade } from './auth.facade';
+import { LoginMessages } from './login.messages';
 
 @Component({
     selector: 'app-login',
@@ -14,30 +15,34 @@ import { AuthService } from '../services/auth.service';
     styleUrl: './login.css'
 })
 export class Login {
-    private toastService = inject(ToastService);
+    private readonly toastService = inject(ToastService);
+    private readonly authFacade = inject(AuthFacade);
+    private readonly destroyRef = inject(DestroyRef);
 
-    loginData = {
-        email: '',
-        password: ''
-    };
+    /** Estado de UI: evita múltiplos submits e indica carregamento. */
+    readonly isLoading = signal(false);
 
-    constructor(private router: Router, private authService: AuthService) { }
+    /** Value Object com os dados do formulário + validação. */
+    loginData = new Credentials();
 
-    onSubmit() {
-        this.authService.login(this.loginData.email, this.loginData.password)
+    onSubmit(): void {
+        if (this.isLoading() || !this.loginData.isValid()) {
+            this.toastService.show(LoginMessages.REQUIRED_FIELDS, 'info');
+            return;
+        }
+
+        this.isLoading.set(true);
+
+        this.authFacade
+            .login(this.loginData)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-                next: (response) => {
-                    if (response) {
-                        sessionStorage.setItem('auth_token', response.token);
-                        this.router.navigate(['/dashboard']);
-                    }
-                    else {
-                        this.toastService.show('Usuário ou senha inválidos!', 'info');
-                    }
+                next: () => this.isLoading.set(false),
+                error: () => {
+                    this.isLoading.set(false);
+                    this.toastService.show(LoginMessages.INVALID_CREDENTIALS, 'error');
                 },
-                error: (error) => {
-                    this.toastService.show('Usuário ou senha inválidos!', 'error');
-                }
             });
     }
 }
+
